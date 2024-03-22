@@ -75,8 +75,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4820744136233844781}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalPosition: {x: 0.3758, y: -0.4, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4820744137618968284}
@@ -153,11 +153,22 @@ MonoBehaviour:
   BaseArmor: 5
   BaseAttackSpeed: 2
   BaseProjectileSpeed: 6
+  BaseBlockDamage: 0
+  BaseHealthRegen: 0
   ProjectilePrefab: {fileID: 3907597443834420985, guid: a1d348a1a0e0ac3429f1bec5e038ef4d, type: 3}
   ProjectileSpawnPos: {fileID: 4820744137618968284}
-  LastAttackTime: 0
+  timeSinceLastAttack: 0
   AttackRange: 2
+  CurEnemiesInRange: []
   TargetPriority: 0
+  CurrentHP: 0
+  CurrentDamage: 0
+  CurrentArmor: 0
+  CurrentAttackSpeed: 0
+  CurrentProjectileSpeed: 0
+  CurrenBlockDamage: 0
+  CurrenHealthRegen: 0
+  MaxHP: 0
 --- !u!58 &4820744136233844778
 CircleCollider2D:
   m_ObjectHideFlags: 0

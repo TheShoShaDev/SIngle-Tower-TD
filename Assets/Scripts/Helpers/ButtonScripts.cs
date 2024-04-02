@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -52,6 +53,23 @@ public class ButtonScripts : MonoBehaviour
 		TowerUpgradeHelpers.UpgradeNonBattleStat(TowerUpgradeHelpers.TowerUpgeradeType.EnemyValueMulti);
 	}
 
+	public void UpdradeAttackRange()
+	{
+		Tower.Instance.UpgradeTower(TowerUpgradeHelpers.TowerUpgeradeType.AttackRange);
+	}
+
+	public void OpenPauseMenu()
+	{
+		if (UIManager.Instance.SetPausePanelActive())
+		{
+			PauseGame();
+		}
+		else
+		{
+			UnPauseGame();
+		}
+	}
+
 	public void PauseGame()
 	{
 		Time.timeScale = 0;
@@ -97,4 +115,9 @@ public class ButtonScripts : MonoBehaviour
 		SceneManager.LoadScene("MainMenu");
 	}
 
+
+	public void MuteEmbient()
+	{
+
+	}
 }

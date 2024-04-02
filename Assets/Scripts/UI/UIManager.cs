@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -24,7 +25,10 @@ public class UIManager : MonoBehaviour
 	[SerializeField] private TextMeshProUGUI HPRegenUpgradeStat;
 	
 	[Header ("AttackRange")]
+	[SerializeField] private TextMeshProUGUI AttackRangeUpgradePrice;
+	[SerializeField] private TextMeshProUGUI AttackRangeUpgradeStat;
 	
+
 	[Header ("Armor")]
 	[SerializeField] private TextMeshProUGUI ArmorUpgradePrice;
 	[SerializeField] private TextMeshProUGUI ArmorUpgradeStat;
@@ -100,12 +104,24 @@ public class UIManager : MonoBehaviour
 	{
 		GameOver.text = LevelManager.instance.GetScore().ToString();
 		GameOverPanel.SetActive(true);
+		GameOverPanel.transform.localScale = new Vector3(0.3f, 0.3f, 0.3f);
+		GameOverPanel.transform.DOScale(Vector3.one, 0.5f)
+			.SetUpdate(UpdateType.Normal, true);
 		LevelManager.instance.SetPauseState(true);
 	}
 
-	public void SetPausePanelActive()
+	public bool SetPausePanelActive()
 	{
 		PausePanel.SetActive(!PausePanel.activeSelf);
+		if (PausePanel.activeSelf)
+		{
+			PausePanel.transform.localScale = new Vector3(0.3f ,0.3f, 0.3f);
+			PausePanel.transform.DOScale(Vector3.one, 0.5f)
+				.SetUpdate(UpdateType.Normal, true);
+		}
+		
+		return PausePanel.activeSelf;
+
 	}
 
 	private void Initprice()
@@ -169,6 +185,11 @@ public class UIManager : MonoBehaviour
 				{
 					EnemyValueMultiUpgradePrice.text = upgradePrice.GetPrice().ToString();
 					break;
+				}	
+			case TowerUpgeradeType.AttackRange:
+				{
+					AttackRangeUpgradePrice.text = upgradePrice.GetPrice().ToString();
+					break;
 				}
 			default:
 				{
@@ -218,6 +239,11 @@ public class UIManager : MonoBehaviour
 			case TowerUpgeradeType.EnemyValueMulti:
 				{
 					EnemyValueMultiUpgradeStat.text = "x" + stat;
+					break;
+				}	
+			case TowerUpgeradeType.AttackRange:
+				{
+					AttackRangeUpgradeStat.text = stat;
 					break;
 				}
 			default:

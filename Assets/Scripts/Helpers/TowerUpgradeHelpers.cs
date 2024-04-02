@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Enums;
 
 public static class TowerUpgradeHelpers
 {
@@ -14,19 +15,7 @@ public static class TowerUpgradeHelpers
 
 	private static List<UpgradePrices> upgradePrices = new List<UpgradePrices>();
 	private static List<NonBattlePrice> nonBattleUpgradePrices = new List<NonBattlePrice>();
-	public enum TowerUpgeradeType
-	{
-		Damage,
-		AttackSpeed,
-		Health,
-		Armor,
-		ProjectileSpeed,
-		HealthRegeneration,
-		BlockDamage,
-		AttackRange,
-		EndWaveIncome,
-		EnemyValueMulti
-	}
+
 
 	public struct UpgradePrices
 	{
@@ -121,7 +110,10 @@ public static class TowerUpgradeHelpers
 		upgradePrices.Add(HealthRegenerationUpgrade);
 
 		UpgradePrices BlockDamageSpeedUpgrade = new UpgradePrices(TowerUpgeradeType.BlockDamage, 10);
-		upgradePrices.Add(BlockDamageSpeedUpgrade);
+		upgradePrices.Add(BlockDamageSpeedUpgrade);	
+		
+		UpgradePrices AttackRangeSpeedUpgrade = new UpgradePrices(TowerUpgeradeType.AttackRange, 10);
+		upgradePrices.Add(AttackRangeSpeedUpgrade);
 
 		NonBattlePrice EndWaveincome = new NonBattlePrice(TowerUpgeradeType.EndWaveIncome, 10, EndWaveIncome);
 		nonBattleUpgradePrices.Add(EndWaveincome);
@@ -162,7 +154,7 @@ public static class TowerUpgradeHelpers
 		{
 			case TowerUpgeradeType.EndWaveIncome:
 				{
-					FindedNonBattleUpgrade.IncresePrice(12);
+					FindedNonBattleUpgrade.IncresePrice(26);
 					FindedNonBattleUpgrade.IncreseValue(26);
 					break;
 				}

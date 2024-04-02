@@ -1,11 +1,15 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
 using static TowerUpgradeHelpers;
+using Enums;
 
 public class Tower : MonoBehaviour
 {
+
 	[Header("BaseStats")]
 	[SerializeField] private float BaseHP;
 	[SerializeField] private float BaseDamage;
@@ -41,6 +45,7 @@ public class Tower : MonoBehaviour
 
 	[Header("Some Trash")]
 	[SerializeField] private CircleCollider2D circleCollider;
+	[SerializeField] private GameObject attackRadiusVisual;
 
 	private float SavedHP = 0;
 	private float SavedDamage = 0;
@@ -108,9 +113,8 @@ public class Tower : MonoBehaviour
 	#region Upgrades
 	private void UpdateAttackRadius()
 	{
-		Vector3 center = transform.position;
 		float radius = circleCollider.radius;
-		Debug.DrawLine(center + Vector3.left * radius, center + Vector3.right * radius, Color.red, 0f, false);
+		attackRadiusVisual.transform.localScale = new Vector3(radius * 2, radius * 2, 1);
 	}
 
 	private IEnumerator HPRegen()
@@ -154,130 +158,133 @@ public class Tower : MonoBehaviour
 		SavedHealthRegen = PlayerPrefs.GetFloat("Saved Health Regen");
 	}
 
-	public void UpgradeTower(TowerUpgeradeType Type)
+	public void UpgradeTower(TowerUpgeradeType type)
 	{
-		UpgradePrices FindedTowerUpgrade = upgradePrices.Find(x => x.GetUpgradeType() == Type);
-		int index = upgradePrices.IndexOf(FindedTowerUpgrade);
 
-		if (!Wallet.Instance.IsEnoughtMoney(FindedTowerUpgrade.GetPrice()))
+
+		UpgradePrices _findedTowerUpgrade = upgradePrices.Find(x => x.GetUpgradeType() == type);
+		int _index = upgradePrices.IndexOf(_findedTowerUpgrade);
+
+		if (!Wallet.Instance.IsEnoughtMoney(_findedTowerUpgrade.GetPrice()))
 		{
 			return;
 		}
-		Wallet.Instance.DecreseBalance(FindedTowerUpgrade.GetPrice());
+		Wallet.Instance.DecreseBalance(_findedTowerUpgrade.GetPrice());
 
 
-		switch (Type)
+		switch (type)
 		{
 			case TowerUpgeradeType.Damage:
 				{
-					FindedTowerUpgrade.IncresePrice(3);
-					CurrentDamage += 7;
+					_findedTowerUpgrade.IncresePrice(6);
+					CurrentDamage += 8;
 					UpdateUpgradeStat(TowerUpgeradeType.Damage);
 					break;
 				}
 			case TowerUpgeradeType.AttackSpeed:
 				{
-					FindedTowerUpgrade.IncresePrice(4);
+					_findedTowerUpgrade.IncresePrice(4);
 					CurrentAttackSpeed += 0.11f;
 					UpdateUpgradeStat(TowerUpgeradeType.AttackSpeed);
 					break;
 				}
 			case TowerUpgeradeType.Health:
 				{
-					FindedTowerUpgrade.IncresePrice(6);
-					CurrentHP += 15;
-					MaxHP += 15;
+					_findedTowerUpgrade.IncresePrice(9);
+					CurrentHP += 16;
+					MaxHP += 16;
 					UpdateUpgradeStat(TowerUpgeradeType.Health);
 					break;
 				}
 			case TowerUpgeradeType.Armor:
 				{
-					FindedTowerUpgrade.IncresePrice(3);
+					_findedTowerUpgrade.IncresePrice(18);
 					CurrentArmor += 3;
 					UpdateUpgradeStat(TowerUpgeradeType.Armor);
 					break;
 				}
 			case TowerUpgeradeType.ProjectileSpeed:
 				{
-					FindedTowerUpgrade.IncresePrice(5);
+					_findedTowerUpgrade.IncresePrice(5);
 					CurrentProjectileSpeed += 1.25f;
 					UpdateUpgradeStat(TowerUpgeradeType.ProjectileSpeed);
 					break;
 				}
 			case TowerUpgeradeType.HealthRegeneration:
 				{
-					FindedTowerUpgrade.IncresePrice(12);
+					_findedTowerUpgrade.IncresePrice(12);
 					CurrenHealthRegen += 3;
 					UpdateUpgradeStat(TowerUpgeradeType.HealthRegeneration);
 					break;
 				}
 			case TowerUpgeradeType.BlockDamage:
 				{
-					FindedTowerUpgrade.IncresePrice(7);
+					_findedTowerUpgrade.IncresePrice(9);
 					CurrenBlockDamage += 4;
 					UpdateUpgradeStat(TowerUpgeradeType.BlockDamage);
 					break;
 				}
 			case TowerUpgeradeType.AttackRange:
 				{
-					FindedTowerUpgrade.IncresePrice(50);
+					_findedTowerUpgrade.IncresePrice(50);
 					CircleCollider2D AttackRange = gameObject.GetComponent<CircleCollider2D>();
-					AttackRange.radius += 0.1f;
-					UIManager.Instance.WriteStat(FindedTowerUpgrade, AttackRange.radius.ToString());
+					AttackRange.radius += 0.1f; 
+					UIManager.Instance.WriteStat(_findedTowerUpgrade, Math.Round(AttackRange.radius, 2).ToString());
+					UpdateAttackRadius();
 					break;
 				}
 		}
 
-		upgradePrices[index] = FindedTowerUpgrade;
-		UIManager.Instance.WritePrice(FindedTowerUpgrade);
+		upgradePrices[_index] = _findedTowerUpgrade;
+		UIManager.Instance.WritePrice(_findedTowerUpgrade);
 		LevelManager.instance.UpdateMoneyText();
 	}
 	
-	private void UpdateUpgradeStat(TowerUpgeradeType Type)
+	private void UpdateUpgradeStat(TowerUpgeradeType type)
 	{
-		UpgradePrices FindedTowerUpgrade = upgradePrices.Find(x => x.GetUpgradeType() == Type);
+		UpgradePrices _findedTowerUpgrade = upgradePrices.Find(x => x.GetUpgradeType() == type);
 
-		switch (Type)
+		switch (type)
 		{
 			case TowerUpgeradeType.Damage:
 				{
-					UIManager.Instance.WriteStat(FindedTowerUpgrade, CurrentDamage.ToString());
+					UIManager.Instance.WriteStat(_findedTowerUpgrade, CurrentDamage.ToString());
 					break;
 				}
 			case TowerUpgeradeType.AttackSpeed:
 				{
-					UIManager.Instance.WriteStat(FindedTowerUpgrade, CurrentAttackSpeed.ToString());
+					UIManager.Instance.WriteStat(_findedTowerUpgrade, Math.Round(CurrentAttackSpeed, 2).ToString());
 					break;
 				}
 			case TowerUpgeradeType.Health:
 				{
-					UIManager.Instance.WriteStat(FindedTowerUpgrade, CurrentHP.ToString());
+					UIManager.Instance.WriteStat(_findedTowerUpgrade, CurrentHP.ToString());
 					break;
 				}
 			case TowerUpgeradeType.Armor:
 				{
-					UIManager.Instance.WriteStat(FindedTowerUpgrade, CurrentArmor.ToString());
+					UIManager.Instance.WriteStat(_findedTowerUpgrade, CurrentArmor.ToString());
 					break;
 				}
 			case TowerUpgeradeType.ProjectileSpeed:
 				{
-					UIManager.Instance.WriteStat(FindedTowerUpgrade, CurrentProjectileSpeed.ToString());
+					UIManager.Instance.WriteStat(_findedTowerUpgrade, CurrentProjectileSpeed.ToString());
 					break;
 				}
 			case TowerUpgeradeType.HealthRegeneration:
 				{
-					UIManager.Instance.WriteStat(FindedTowerUpgrade, CurrenHealthRegen.ToString());
+					UIManager.Instance.WriteStat(_findedTowerUpgrade, CurrenHealthRegen.ToString());
 					break;
 				}
 			case TowerUpgeradeType.BlockDamage:
 				{
-					UIManager.Instance.WriteStat(FindedTowerUpgrade, CurrenBlockDamage.ToString());
+					UIManager.Instance.WriteStat(_findedTowerUpgrade, CurrenBlockDamage.ToString());
 					break;
 				}
 			case TowerUpgeradeType.AttackRange:
 				{
 					CircleCollider2D AttackRange = gameObject.GetComponent<CircleCollider2D>();
-					UIManager.Instance.WriteStat(FindedTowerUpgrade, AttackRange.radius.ToString());
+					UIManager.Instance.WriteStat(_findedTowerUpgrade, AttackRange.radius.ToString());
 					break;
 				}
 		}
@@ -293,14 +300,14 @@ public class Tower : MonoBehaviour
 		}
 	}
 
-	public void GetDamage(float Damage)
+	public void GetDamage(float damage)
 	{
 		if (IsDied)
 		{
 			return;
 		}
 
-		CurrentHP -= Damage - ((CurrentArmor / 100) * Damage) - CurrenBlockDamage;
+		CurrentHP -= damage - ((CurrentArmor / 100) * damage) - CurrenBlockDamage;
 
 		UIManager.Instance.DrawCurHP();
 
@@ -315,7 +322,6 @@ public class Tower : MonoBehaviour
 	{
 		IsDied = true;
 		UIManager.Instance.ActivateGameOverPanel();
-		//LevelManager.instance.SetPauseState(true);
 	}
 
 	public float CurrentHealth()
@@ -326,13 +332,6 @@ public class Tower : MonoBehaviour
 	public float GetMaxHP()
 	{
 		return MaxHP;
-	}
-
-	public enum TowerTargetPriority
-	{
-		First,
-		Strong,
-		Close
 	}
 
 	private void OnTriggerEnter2D(Collider2D collision)
@@ -353,8 +352,8 @@ public class Tower : MonoBehaviour
 
 	private void Attack()
 	{
-		GameObject proj = Instantiate(ProjectilePrefab, ProjectileSpawnPos.position, Quaternion.identity);
-		proj.GetComponent<Projectile>().Initialize(CurEnemy, CurrentDamage, CurrentProjectileSpeed);
+		GameObject _proj = Instantiate(ProjectilePrefab, ProjectileSpawnPos.position, Quaternion.identity);
+		_proj.GetComponent<Projectile>().Initialize(CurEnemy, CurrentDamage, CurrentProjectileSpeed);
 
 	}
 

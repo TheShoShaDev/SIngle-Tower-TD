@@ -26,10 +26,10 @@ public class EmeniesSpawner : MonoBehaviour
 	[Header("Some Var")]
 	[SerializeField] private int WaveNumber = 0;
 	[SerializeField] private float NewWaveDelay = 10f;
-	[SerializeField] private float timeSinceLastSpawn;
+	[SerializeField] private float _timeSinceLastSpawn;
 	[SerializeField] private int enemiesAlive;
 	[SerializeField] private int enemiesLeftToSpawn;
-	[SerializeField] private bool IsSpawning = false;
+	[SerializeField] private bool _IsSpawning = false;
 
 	public static EmeniesSpawner instance;
 
@@ -65,14 +65,14 @@ public class EmeniesSpawner : MonoBehaviour
 
 	private void Update()
 	{
-		if (!IsSpawning)
+		if (!_IsSpawning)
 		{
 			return;
 		}
 
-		timeSinceLastSpawn += Time.deltaTime;
+		_timeSinceLastSpawn += Time.deltaTime;
 
-		if (timeSinceLastSpawn >= 1 / enemiesPerSecond
+		if (_timeSinceLastSpawn >= 1 / enemiesPerSecond
 			&& enemiesLeftToSpawn > 0)
 		{
 			if (WaveNumber % 10 == 0
@@ -85,7 +85,7 @@ public class EmeniesSpawner : MonoBehaviour
 				SpawnRegularEnemy();
 			}
 
-			timeSinceLastSpawn = 0;
+			_timeSinceLastSpawn = 0;
 			enemiesLeftToSpawn--;
 			enemiesAlive++;
 
@@ -102,7 +102,7 @@ public class EmeniesSpawner : MonoBehaviour
 			return;
 		}
 		EndWave();
-		IsSpawning = true;
+		_IsSpawning = true;
 		WaveNumber++;
 		GetWaveEnemies();
 		enemiesLeftToSpawn = GetEnemiesCount();
@@ -123,8 +123,8 @@ public class EmeniesSpawner : MonoBehaviour
 
 	private void EndWave()
 	{
-		IsSpawning = false;
-		timeSinceLastSpawn = 0f;
+		_IsSpawning = false;
+		_timeSinceLastSpawn = 0f;
 
 		foreach (EnemyData enemy in EnemiesData)
 		{
@@ -140,22 +140,22 @@ public class EmeniesSpawner : MonoBehaviour
 
 	private void SpawnRegularEnemy()
 	{
-		GameObject prefabToSpawn = WaveEnemies[UnityEngine.Random.Range(0, WaveEnemies.Count - 1)];
-		Instantiate(prefabToSpawn, GetStartPoint(), Quaternion.identity);
-		WaveEnemies.Remove(prefabToSpawn);
+		GameObject _prefabToSpawn = WaveEnemies[UnityEngine.Random.Range(0, WaveEnemies.Count - 1)];
+		Instantiate(_prefabToSpawn, GetStartPoint(), Quaternion.identity);
+		WaveEnemies.Remove(_prefabToSpawn);
 	}
 
 	private Vector3 GetStartPoint()
 	{
-		int index = UnityEngine.Random.Range(0, StartPoints.Length);
-		return StartPoints[index].position;
+		int _index = UnityEngine.Random.Range(0, StartPoints.Length);
+		return StartPoints[_index].position;
 	}
 
 	private void SpawnBoss()
 	{
 		BossPrefab[0].EnemyPrefab.GetComponent<Enemy>().IncreseStats(BossPrefab[0].waveDmgMulti * WaveNumber, BossPrefab[0].waveHpMulti * WaveNumber);
-		GameObject prefabToSpawn = BossPrefab[0].EnemyPrefab;
-		Instantiate(prefabToSpawn, GetStartPoint(), Quaternion.identity);
+		GameObject _prefabToSpawn = BossPrefab[0].EnemyPrefab;
+		Instantiate(_prefabToSpawn, GetStartPoint(), Quaternion.identity);
 	}
 
 	public void GetWaveEnemies()
@@ -168,8 +168,8 @@ public class EmeniesSpawner : MonoBehaviour
 				&& WaveNumber >= _enemyData.WaveMod
 			&& WaveNumber != 10)
 			{
-				int EnemyCount = Convert.ToInt32(_enemyData.baseCount * _enemyData.waveMulti);
-				for (int i = 0; i < EnemyCount; i++)
+				int _enemyCount = Convert.ToInt32(_enemyData.baseCount * _enemyData.waveMulti);
+				for (int i = 0; i < _enemyCount; i++)
 				{
 					WaveEnemies.Add(_enemyData.EnemyPrefab);
 				}

@@ -100,16 +100,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3dff6cc72f305144985c191a101a44df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BaseHP: 20
+  BaseHP: 25
   BaseArmor: 5
   BaseDamage: 2
-  BaseAttackSpeed: 0.7
+  BaseAttackSpeed: 0.9
   Value: 5
   CurrentHP: 0
-  ExtraHP: 3.3000002
+  ExtraHP: 1.1
   CurrentArmor: 0
   CurrentDamage: 0
-  ExtraDamage: 4.8
+  ExtraDamage: 1.6
   CurrentAttackSpeed: 0
   LastAttackTime: 0
 --- !u!114 &4485618531320651213

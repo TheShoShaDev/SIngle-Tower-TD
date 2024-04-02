@@ -11,7 +11,6 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI MoneyText;
 
     private float ScorePoints;
-    private bool IsPaused = false;
 
     private void Awake()
     {
@@ -35,8 +34,6 @@ public class LevelManager : MonoBehaviour
 
     public void SetPauseState(bool IsPaused)
     {
-        this.IsPaused = IsPaused;
-
 		Time.timeScale = IsPaused ? 0 : 1;
 	}
 

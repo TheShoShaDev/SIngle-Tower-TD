@@ -1,8 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Threading;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Enums;
 
 public class ButtonScripts : MonoBehaviour
 {
@@ -10,52 +8,52 @@ public class ButtonScripts : MonoBehaviour
 
 	public void UpdradeDamage()
 	{
-		Tower.Instance.UpgradeTower(TowerUpgradeHelpers.TowerUpgeradeType.Damage);
+		Tower.Instance.UpgradeTower(TowerUpgeradeType.Damage);
 	}
 
 	public void UpdradeArmor()
 	{
-		Tower.Instance.UpgradeTower(TowerUpgradeHelpers.TowerUpgeradeType.Armor);
+		Tower.Instance.UpgradeTower(TowerUpgeradeType.Armor);
 	}
 
 	public void UpdradeProjectileSpeed()
 	{
-		Tower.Instance.UpgradeTower(TowerUpgradeHelpers.TowerUpgeradeType.ProjectileSpeed);
+		Tower.Instance.UpgradeTower(TowerUpgeradeType.ProjectileSpeed);
 	}
 
 	public void UpdradeAttackSpeed()
 	{
-		Tower.Instance.UpgradeTower(TowerUpgradeHelpers.TowerUpgeradeType.AttackSpeed);
+		Tower.Instance.UpgradeTower(TowerUpgeradeType.AttackSpeed);
 	}
 
 	public void UpdradeBlockDamage()
 	{
-		Tower.Instance.UpgradeTower(TowerUpgradeHelpers.TowerUpgeradeType.BlockDamage);
+		Tower.Instance.UpgradeTower(TowerUpgeradeType.BlockDamage);
 	}
 
 	public void UpdradeHealth()
 	{
-		Tower.Instance.UpgradeTower(TowerUpgradeHelpers.TowerUpgeradeType.Health);
+		Tower.Instance.UpgradeTower(TowerUpgeradeType.Health);
 	}
 
 	public void UpdradeHealthRegeneration()
 	{
-		Tower.Instance.UpgradeTower(TowerUpgradeHelpers.TowerUpgeradeType.HealthRegeneration);
+		Tower.Instance.UpgradeTower(TowerUpgeradeType.HealthRegeneration);
 	}
 
 	public void UpdradeEndWaveIncome()
 	{
-		TowerUpgradeHelpers.UpgradeNonBattleStat(TowerUpgradeHelpers.TowerUpgeradeType.EndWaveIncome);
+		TowerUpgradeHelpers.UpgradeNonBattleStat(TowerUpgeradeType.EndWaveIncome);
 	}
 
 	public void UpdradeEnemyValueMulti()
 	{
-		TowerUpgradeHelpers.UpgradeNonBattleStat(TowerUpgradeHelpers.TowerUpgeradeType.EnemyValueMulti);
+		TowerUpgradeHelpers.UpgradeNonBattleStat(TowerUpgeradeType.EnemyValueMulti);
 	}
 
 	public void UpdradeAttackRange()
 	{
-		Tower.Instance.UpgradeTower(TowerUpgradeHelpers.TowerUpgeradeType.AttackRange);
+		Tower.Instance.UpgradeTower(TowerUpgeradeType.AttackRange);
 	}
 
 	public void OpenPauseMenu()

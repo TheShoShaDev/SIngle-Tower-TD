@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 public class EnemyMovement : MonoBehaviour
 {
@@ -16,7 +18,6 @@ public class EnemyMovement : MonoBehaviour
 	private Transform target;
     private float Movespeed;
     private Vector2 direction;
-    private bool IsNeedToStop;
 
 
 
@@ -25,27 +26,23 @@ public class EnemyMovement : MonoBehaviour
         Movespeed = BaseMovespeed;
     }
 
-    void Start()
+	private void Start()
     {
         target = LevelManager.instance.TowerPoint;
-    }
+		direction = (target.position - transform.position).normalized;
 
-    private void FixedUpdate()
-    {
-        if (!IsNeedToStop)
-        {
-            direction = (target.position - transform.position).normalized;
+		rb.velocity = direction * Movespeed;
 
-            rb.velocity = direction * Movespeed;
-        }
-    }
+		Vector3 lookDirection = target.position - transform.position;
+		float angle = Mathf.Atan2(lookDirection.y, lookDirection.x) * Mathf.Rad2Deg;
+		transform.rotation = Quaternion.Euler(0, 0, angle - 90); // Корректируем угол для спрайтов в 2D
+	}
 
 	private void OnTriggerEnter2D(Collider2D collision)
 	{
 		if(collision.CompareTag("StopEnemyTrigger"))
         {
             rb.velocity = new Vector2(0, 0);
-            IsNeedToStop = true;
             HostEnemy.SetCanAttack();
         }
 	}
